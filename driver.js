@@ -4,31 +4,16 @@ let blindSignatures = require('blind-signatures');
 let SpyAgency = require('./spyAgency.js').SpyAgency;
 
 function makeDocument(coverName) {
-  return `🔏 Document for Agent: ${coverName}\n🎖️ Status: Full Diplomatic Immunity Granted`;
+  return `The bearer of this signed document, ${coverName}, has full diplomatic immunity.`;
 }
 
-// 🔹 استبدال جميع الأسماء القديمة بأسماء جديدة كليًا  
-let coverNames = [
-  "Jonathan Drake",
-  "Sophia West",
-  "Alexander Knight",
-  "Victoria Hale",
-  "Christopher Vaughn",
-  "Natalie Pierce",
-  "Daniel Mercer",
-  "Isla Montgomery",
-  "Ethan Caldwell",
-  "Scarlett Hayes"
-];
+let agency = new SpyAgency();
 
-let documents = coverNames.map(makeDocument);
+let coverNames = ["Adam Smith", "Emma Johnson", "Oliver Brown", "Liam Wilson", "Sophia Davis", "James Anderson", "Ella Martinez", "Ethan Thomas", "Ava Harris", "Mia Robinson"];let documents = coverNames.map(makeDocument);
 
 let blindDocs = [];
 let blindingFactors = [];
 
-let agency = new SpyAgency();
-
-// 🔹 تجهيز المستندات للتوقيع الأعمى
 documents.forEach((doc) => {
   let { blinded, r } = blindSignatures.blind({
     message: doc,
@@ -39,10 +24,9 @@ documents.forEach((doc) => {
   blindingFactors.push(r);
 });
 
-// 🔹 تحسين الإخراج وإضافة فواصل ورسائل واضحة
-console.log("\n==============================================");
-console.log("🚀 🔒 SPY AGENCY - SECURE BLIND SIGNATURE SYSTEM 🔒 🚀");
-console.log("==============================================\n");
+console.log("=======================================");
+console.log("🚀 Spy Agency Blind Signature Process 🚀");
+console.log("=======================================\n");
 
 agency.signDocument(blindDocs, (selected, verifyAndSign) => {
   let signedBlinds = verifyAndSign(
@@ -63,21 +47,17 @@ agency.signDocument(blindDocs, (selected, verifyAndSign) => {
     message: documents[selected],
   });
 
-  console.log("🔍 **AGENCY HAS SELECTED A DOCUMENT FOR SIGNING** 🔍");
-  console.log("--------------------------------------------------");
-  console.log(`📌 **Agent Identity:**      "${coverNames[selected]}"`);
-  console.log(`📜 **Official Document:**\n"${documents[selected]}"\n`);
-  
-  console.log("✍️ **Signing Process Initiated...**");
-  console.log("--------------------------------------------------");
+  console.log(`🔍 Agency selected document #${selected}`);
+  console.log(`📜 Selected Cover Identity: "${coverNames[selected]}"`);
+  console.log(`✍️ Signed Document: "${documents[selected]}"`);
 
   if (isValid) {
-    console.log("✅ \x1b[32mSIGNATURE VERIFIED - DOCUMENT IS AUTHENTIC\x1b[0m");
+    console.log("\n✅ \x1b[32mSignature verification successful!\x1b[0m");
   } else {
-    console.log("❌ \x1b[31mSIGNATURE VERIFICATION FAILED - POSSIBLE FORGERY DETECTED!\x1b[0m");
+    console.log("\n❌ \x1b[31mSignature verification failed!\x1b[0m");
   }
 
-  console.log("\n==============================================");
-  console.log("🔐 MISSION COMPLETE - DOCUMENT SECURELY SIGNED 🔐");
-  console.log("==============================================");
+  console.log("\n=======================================");
+  console.log("🔒 Secure Digital Signing Completed!");
+  console.log("=======================================");
 });
